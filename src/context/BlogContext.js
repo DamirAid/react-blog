@@ -10,7 +10,8 @@ const INIT_STATE = {
 	editCategory: {},
 	editArticleIndex: null,
 	editArticle: {},
-	editCategoryArticle: {}
+	editCategoryArticle: {},
+	searchArticles: []
 
 }
 
@@ -30,6 +31,8 @@ const reducer = (state = INIT_STATE, action) => {
 			return { ...state, editArticle: action.payload }
 		case "GET_EDIT_CATEGORY_ARTICLE":
 			return { ...state, editCategoryArticle: action.payload }
+			case "GET_SEARCH_CATEGORY":
+				return { ...state, searchArticles: action.payload }			
 		default:
 			return state
 	}
@@ -113,6 +116,14 @@ const BlogContextProvider = ({ children }) => {
 			payload: data.artcileList[index - 1]
 		})
 	}
+	const getSearchCategories = async (searchValue) => {
+		const { data } = await axios(`http://localhost:8000/articles/?q=${searchValue}`)
+		dispatch({
+			type: "GET_SEARCH_CATEGORY",
+			payload: data
+		})
+
+	}
 
 
 	const editCurArticle = async (editArticle, id) => {
@@ -132,6 +143,7 @@ const BlogContextProvider = ({ children }) => {
 			editArticleIndex: state.editArticleIndex,
 			editArticle: state.editArticle,
 			editCategoryArticle: state.editCategoryArticle,
+			searchArticles: state.searchArticles,
 
 
 
@@ -146,7 +158,8 @@ const BlogContextProvider = ({ children }) => {
 			getEditArticle,
 			editCurArticle,
 			getEditCategoryArticle,
-			deleteCurArticle
+			deleteCurArticle,
+			getSearchCategories
 
 		}}>
 			{children}

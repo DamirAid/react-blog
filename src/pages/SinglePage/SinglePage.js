@@ -6,7 +6,7 @@ const SinglePage = (props) => {
 
 
 	console.log(props.match.params.index)
-	const { articleIndex, getNewArticle, article } = useContext(blogContext)
+	const { getNewArticle, article } = useContext(blogContext)
 
 	useEffect(() => {
 		getNewArticle(props.match.params.id)
@@ -19,7 +19,7 @@ const SinglePage = (props) => {
 				article.artcileList.map((item, index) => {
 					if (index === props.match.params.index - 1) {
 						return (
-							<ArticleContentItem item={item}/>
+							<ArticleContentItem key={index} item={item}/>
 						)
 					}
 				})
